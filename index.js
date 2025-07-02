@@ -41,7 +41,8 @@ app.post('/gather', (req, res) => {
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Express server listening on port ${PORT}`);
-  createCall();
+//   createCall();
+  sendMessage();
 });
 
 // 4. Make the outbound call
@@ -52,4 +53,22 @@ async function createCall() {
     url: "https://improved-tiger-instantly.ngrok-free.app/ivr", // Replace with your public ngrok URL
   });
   console.log('Call SID:', call.sid);
+}
+
+// 5. Send an SMS message
+// async function sendMessage(to, from, body) {
+const sendMessage = async () => {
+  const to = "+6588680150";
+  const from = "+6582410222";
+  const body = "Hello, this is a test message from Twilio!";
+  try {
+    const message = await client.messages.create({
+      to,
+      from,
+      body
+    });
+    console.log('Message SID:', message.sid);
+  } catch (error) {
+    console.error('Failed to send message:', error);
+  }
 }
