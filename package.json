@@ -13,6 +13,7 @@
   "dependencies": {
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
-    "twilio": "^5.7.1"
+    "twilio": "^5.7.1",
+    "@green-api/whatsapp-api-client-js-v2": "^2.0.0"
   }
 }

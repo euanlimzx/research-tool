@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const twilio = require("twilio"); // Or, for ESM: import twilio from "twilio";
 require('dotenv').config();
+const { GreenApiClient } = require('@green-api/whatsapp-api-client-js-v2');
 // Find your Account SID and Auth Token at twilio.com/console
 // and set the environment variables. See http://twil.io/secure
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -42,7 +43,8 @@ const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Express server listening on port ${PORT}`);
 //   createCall();
-  sendMessage();
+  // sendMessage();
+  sendWhatsAppMessage();
 });
 
 // 4. Make the outbound call
@@ -70,5 +72,24 @@ const sendMessage = async () => {
     console.log('Message SID:', message.sid);
   } catch (error) {
     console.error('Failed to send message:', error);
+  }
+}
+
+// 6. Send a WhatsApp message using Green-API
+async function sendWhatsAppMessage() {
+  const idInstance = process.env.GREENAPI_ID_INSTANCE;
+  const apiTokenInstance = process.env.GREENAPI_API_TOKEN_INSTANCE;
+  const client = new GreenApiClient({
+    idInstance,
+    apiTokenInstance
+  });
+  try {
+    const result = await client.sendMessage({
+      chatId: '6588680150@c.us', // Replace with the actual WhatsApp number in international format + country code, e.g. 1234567890@c.us
+      message: 'Hello from WhatsApp via Green-API!'
+    });
+    console.log('WhatsApp message sent:', result);
+  } catch (error) {
+    console.error('Failed to send WhatsApp message:', error);
   }
 }
